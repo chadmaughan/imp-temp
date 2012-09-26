@@ -17,12 +17,13 @@ post '/' do
 
 	# parse it
 	data = JSON.parse body
+	puts "recieved: #{data}"
 
 	# connect to the database
 	begin
 		# DATABASE_URL
 		# postgres://username:password@host:port/database_name
-		db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/temperature')
+		db = URI.parse(ENV['HEROKU_POSTGRESQL_ONYX_URL'] || 'postgres://localhost/temperature')
 		conn = PGconn.connect(db.host, '', '',  db.path[1..-1])
 		puts "connected"
 		conn.prepare('statement', "INSERT INTO temperature (location, temperature) VALUES ($1, $2)")
