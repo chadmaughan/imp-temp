@@ -34,7 +34,9 @@ post '/' do
 		puts "inserted temperature: #{data['location']}, #{data['temperature']}"
 	ensure
 		puts "closing connection"
-		conn.close
+		unless conn.nil?
+			conn.close
+		end
 	end
 
 	# output
