@@ -9,6 +9,9 @@
 -- the url variable is the first line
 -- ie - HEROKU_POSTGRESQL_ONYX_URL
 
+-- get the credentials
+-- heroku pg:credentials
+
 -- connect to PSQL
 --	heroku pg:psql
 CREATE TABLE temperature (
