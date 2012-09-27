@@ -2,6 +2,6 @@
 
 require './web.rb'
 
-set :database, ENV['HEROKU_POSTGRESQL_ONYX_URL'] || 'postgres://localhost/temperature'
+set :database, ENV['DATABASE_URL'] || 'postgres://localhost/temperature'
 
 run Sinatra::Application

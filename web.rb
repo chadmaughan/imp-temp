@@ -23,7 +23,7 @@ post '/' do
 	begin
 		# DATABASE_URL
 		# postgres://username:password@host:port/database_name
-		db = URI.parse(ENV['HEROKU_POSTGRESQL_ONYX_URL'] || 'postgres://localhost:5432/temperature')
+		db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost:5432/temperature')
 		puts "url: host: #{db.host}, port: #{db.port}, user: #{db.user}, database: #{db.path[1..-1]}"
 
 		if db.user.nil? and db.password.nil?

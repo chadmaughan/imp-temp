@@ -12,6 +12,9 @@
 -- get the credentials
 -- heroku pg:credentials
 
+-- check the ENV variable
+-- heroku config:get DATABASE_URL
+
 -- connect to PSQL
 --	heroku pg:psql
 CREATE TABLE temperature (
