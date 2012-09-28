@@ -3,10 +3,12 @@ require 'json'
 require 'pg'
 require 'uri'
 
+# HTTP GET
 get '/' do
 	"HTTP GET"
 end
 
+# HTTP POST
 post '/' do
 
 	# in case someone already read it
@@ -21,11 +23,16 @@ post '/' do
 
 	# connect to the database
 	begin
+
+		# log the user ip
+		puts "user ip: #{request.ip}"
+
 		# DATABASE_URL
 		# postgres://username:password@host:port/database_name
 		db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost:5432/temperature')
 		puts "url: host: #{db.host}, port: #{db.port}, user: #{db.user}, database: #{db.path[1..-1]}"
 
+		# connection to localhost doesn't have credentials, use two separate connection calls 
 		if db.user.nil? and db.password.nil?
 			puts "no user/password connection"
 			conn = PGconn.connect(db.host, '', '',  db.path[1..-1])
@@ -36,11 +43,13 @@ post '/' do
 
 		puts "connected to database"
 
-		conn.prepare('statement', "INSERT INTO temperature (location, temperature) VALUES ($1, $2)")
-		conn.exec_prepared('statement', [data['location'], data['temperature']])
-
-		puts "inserted temperature: #{data['location']}, #{data['temperature']}"
-
+		# only insert from 'outside', 'basement', 'loft'
+		if ['basement','loft','outside'].include? data['location'] 
+			conn.prepare('statement', "INSERT INTO temperature (location, temperature, ip) VALUES ($1, $2, $3)")
+			conn.exec_prepared('statement', [data['location'], data['temperature'], request.ip"])
+		
+			puts "inserted temperature: #{data['location']}, #{data['temperature']}, from #{request.ip}"
+		end
 	ensure
 		puts "closing connection"
 		unless conn.nil?
