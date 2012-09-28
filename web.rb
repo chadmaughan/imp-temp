@@ -21,11 +21,12 @@ post '/' do
 	data = JSON.parse body
 	puts "recieved: #{data}"
 
+	# log the user ip
+	ip = env[‘HTTP_X_REAL_IP’] ||= env[‘REMOTE_ADDR’]
+	puts "user ip: #{request.ip} or #{ip}"
+
 	# connect to the database
 	begin
-
-		# log the user ip
-		puts "user ip: #{request.ip}"
 
 		# DATABASE_URL
 		# postgres://username:password@host:port/database_name
@@ -44,9 +45,16 @@ post '/' do
 		puts "connected to database"
 
 		# only insert from 'outside', 'basement', 'loft'
-		if ['basement','loft','outside'].include? data['location'] 
+		if ['basement','loft','outside'].include? data['location']
+
+			# manually set the electric imp location
+			#	recieved: {"value"=>23.5, "target"=>"305ef09ab7860666", "channel"=>1}
+			if data['channel'].nil?
+				data['location'] = "loft";
+			end
+
 			conn.prepare('statement', "INSERT INTO temperature (location, temperature, ip) VALUES ($1, $2, $3)")
-			conn.exec_prepared('statement', [data['location'], data['temperature'], request.ip"])
+			conn.exec_prepared('statement', [data['location'], data['temperature'], ip])
 		
 			puts "inserted temperature: #{data['location']}, #{data['temperature']}, from #{request.ip}"
 		end
