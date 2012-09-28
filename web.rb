@@ -47,8 +47,9 @@ post '/' do
 		# manually set the electric imp location
 		#	recieved: {"value"=>23.5, "target"=>"305ef09ab7860666", "channel"=>1}
 		if not data['channel'].nil?
-			puts "'channel' set in JSON, setting to 'loft' location"
+			puts "'channel' set in JSON, setting to 'loft' location and associating imp value"
 			data['location'] = "loft";
+			data['temperature'] = data['value']
 		else
 			puts "location set: #{data['location']}"
 		end
