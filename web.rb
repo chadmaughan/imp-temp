@@ -45,7 +45,7 @@ post '/' do
 		puts "connected to database"
 
 		# only insert from 'outside', 'basement', 'loft'
-		if ['basement','loft','outside'].include? data['location']
+		if ['temp','basement','loft','outside'].include? data['location']
 
 			# manually set the electric imp location
 			#	recieved: {"value"=>23.5, "target"=>"305ef09ab7860666", "channel"=>1}
@@ -57,6 +57,8 @@ post '/' do
 			conn.exec_prepared('statement', [data['location'], data['temperature'], ip])
 		
 			puts "inserted temperature: #{data['location']}, #{data['temperature']}, from #{request.ip}"
+		else
+			puts "unknown source location"
 		end
 	ensure
 		puts "closing connection"
