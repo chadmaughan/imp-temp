@@ -23,7 +23,7 @@ post '/' do
 
 	# log the user ip
 	ip = env['HTTP_X_REAL_IP'] ||= env['REMOTE_ADDR']
-	puts "user ip: #{request.ip} or #{ip}"
+	puts "user ip: #{request.ip} (or heroku header ip: #{ip})"
 
 	# connect to the database
 	begin
@@ -49,7 +49,7 @@ post '/' do
 
 			# manually set the electric imp location
 			#	recieved: {"value"=>23.5, "target"=>"305ef09ab7860666", "channel"=>1}
-			if data['location'].nil?
+			if not data['channel'].nil?
 				data['location'] = "loft";
 			end
 
@@ -58,7 +58,7 @@ post '/' do
 		
 			puts "inserted temperature: #{data['location']}, #{data['temperature']}, from #{request.ip}"
 		else
-			puts "unknown source location"
+			puts "unknown source location: #{data['location']}"
 		end
 	ensure
 		puts "closing connection"
@@ -66,7 +66,4 @@ post '/' do
 			conn.close
 		end
 	end
-
-	# output
-	puts "insert - #{data['location']}, #{data['temperature']}"
 end
