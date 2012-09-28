@@ -22,7 +22,7 @@ post '/' do
 	puts "recieved: #{data}"
 
 	# log the user ip
-	ip = env[‘HTTP_X_REAL_IP’] ||= env[‘REMOTE_ADDR’]
+	ip = env['HTTP_X_REAL_IP'] ||= env['REMOTE_ADDR']
 	puts "user ip: #{request.ip} or #{ip}"
 
 	# connect to the database
