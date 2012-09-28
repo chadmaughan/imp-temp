@@ -44,14 +44,14 @@ post '/' do
 
 		puts "connected to database"
 
+		# manually set the electric imp location
+		#	recieved: {"value"=>23.5, "target"=>"305ef09ab7860666", "channel"=>1}
+		if not data['channel'].nil?
+			data['location'] = "loft";
+		end
+
 		# only insert from 'outside', 'basement', 'loft'
 		if ['temp','basement','loft','outside'].include? data['location']
-
-			# manually set the electric imp location
-			#	recieved: {"value"=>23.5, "target"=>"305ef09ab7860666", "channel"=>1}
-			if not data['channel'].nil?
-				data['location'] = "loft";
-			end
 
 			conn.prepare('statement', "INSERT INTO temperature (location, temperature, ip) VALUES ($1, $2, $3)")
 			conn.exec_prepared('statement', [data['location'], data['temperature'], request.ip])
