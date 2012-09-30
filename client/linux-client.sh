@@ -2,22 +2,7 @@
 require 'json'
 require 'rest_client'
 
-class Temp
-        def initialize(location, temperature)
-                @location = location
-                @temperature = temperature
-        end
-
-        def to_json(*a)
-                {
-                        "location" => @location,
-                        "temperature" => @temperature
-                }.to_json(*a)
-        end
-
-        attr_reader :location
-        attr_reader :temperature
-end
+require File.join(File.dirname(__FILE__), 'temp')
 
 value = `/home/chad/temper1/temper1 -uF | awk -F, '{print $2}'`.gsub(/\s+/, "").to_f
 
