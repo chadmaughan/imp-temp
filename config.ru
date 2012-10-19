@@ -2,6 +2,4 @@
 
 require './web.rb'
 
-set :database, ENV['DATABASE_URL'] || 'postgres://localhost/temperature'
-
 run Sinatra::Application

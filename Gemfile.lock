@@ -7,6 +7,7 @@ GEM
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
+    sequel (3.40.0)
     sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -23,5 +24,6 @@ PLATFORMS
 DEPENDENCIES
   pg
   rack
+  sequel
   sinatra
   thin
