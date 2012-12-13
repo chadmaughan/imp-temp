@@ -20,7 +20,7 @@ end
 
 # HTTP DELETE
 delete '/' do
-	deletes = db["DELETE FROM temperature WHERE id NOT IN (SELECT id FROM temperature ORDER BY id DESC LIMIT 7000)"]
+	deletes = db["DELETE FROM temperature WHERE id NOT IN (SELECT id FROM temperature ORDER BY id DESC LIMIT 5000)"]
 	count = deletes.delete
 	puts "delete count: #{count}"
 end
